@@ -19,7 +19,7 @@ import android.widget.Toast;
 public class CameraActivity extends Activity {
 
 	Camera mCamera;
-	Preview mPreview;
+	CameraPreview mCameraPreview;
 	ImageView cameraView;
 	
     @Override
@@ -29,14 +29,35 @@ public class CameraActivity extends Activity {
         
         // Check if camera is available.
         if (checkForCameraHardware(this)) {
-        	Toast.makeText(CameraActivity.this, "Camera is available! :).", Toast.LENGTH_SHORT).show();
+        	Toast.makeText(CameraActivity.this, "Camera hardware is available! :).", Toast.LENGTH_SHORT).show();
         }
         
         else {
-        	Toast.makeText(CameraActivity.this, "Camera is not available.", Toast.LENGTH_SHORT).show();
+        	Toast.makeText(CameraActivity.this, "Camera hardware is not available.", Toast.LENGTH_SHORT).show();
         }
         
-        setupCamera();
+        // Get an instance of the camera
+        mCamera = getCameraInstance();
+        
+        if (mCamera == null) {
+        	Toast.makeText(CameraActivity.this, "Camera instance is null.", Toast.LENGTH_SHORT).show();
+        } else {
+        	Toast.makeText(CameraActivity.this, "Camera instance retrieved!.", Toast.LENGTH_SHORT).show();
+        }
+        
+        // Create our Preview view and set it as the content of our activity.
+        mCameraPreview = new CameraPreview(this, mCamera);
+        FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
+        preview.addView(mCameraPreview);
+        
+//        mCamera.startPreview();
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
     }
     
     /** Check if this device has a camera */
@@ -50,51 +71,15 @@ public class CameraActivity extends Activity {
         }
     }
     
-    void setupCamera() {
-    	// Attempt to get a Camera instance.
-    	try {
-    		mCamera = Camera.open();
-    	}
-    	
-    	// Camera is not available (in use or does not exist)
-    	catch (Exception e) {
-    		Toast.makeText(CameraActivity.this, "Camera is not available (in use or does not exist, duration", Toast.LENGTH_LONG).show();
-    	}
-    }
-    
-    private boolean safeCameraOpen(int id) {
-        boolean qOpened = false;
-        
+    /** A safe way to get an instance of the Camera object. */
+    public static Camera getCameraInstance(){
+        Camera c = null;
         try {
-            releaseCameraAndPreview();
-           // mCamera.unlock();
-            mCamera = Camera.open(0);
-            qOpened = (mCamera != null);
-        } catch (Exception e) {
-            Log.e(getString(R.string.app_name), "failed to open Camera");
-            e.printStackTrace();
+            c = Camera.open(0); // attempt to get a Camera instance
         }
-
-        return qOpened;    
-    }
-
-    private void releaseCameraAndPreview() {
-        mPreview.setCamera(null);
-        if (mCamera != null) {
-            mCamera.release();
-            mCamera = null;
+        catch (Exception e){
+            // Camera is not available (in use or does not exist)
         }
+        return c; // returns null if camera is unavailable
     }
-   
-    public void open(){
-        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, 0);
-     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-    
 }

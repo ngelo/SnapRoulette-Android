@@ -1,6 +1,5 @@
 package com.example.snaproulette;
 
-import com.parse.GetDataCallback;
 import com.parse.Parse;
 import com.parse.ParseFile;
 import com.parse.ParseInstallation;

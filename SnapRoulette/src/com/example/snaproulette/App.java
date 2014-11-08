@@ -11,7 +11,7 @@ public class App extends Application {
 	public void onCreate(){
 		super.onCreate();
 
-		// Configure the applicaiton with the Parse SDK
+		// Configure the application with the Parse SDK
 		Parse.initialize(this, "KaobAtZ2RN71vQlWoZWPKVD51cqCIPirGfTsSq8m",
 			"AuyBC5IMWQttOIhhoQ44mxEMpQ0IelFsDyX8gFTO");
 

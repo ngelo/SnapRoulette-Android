@@ -7,6 +7,7 @@ import android.hardware.Camera;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Toast;
 
 /** A basic Camera preview class */
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback {
@@ -30,6 +31,12 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         // The Surface has been created, now tell the camera where to draw the preview.
         try {
             mCamera.setPreviewDisplay(holder);
+            
+            Camera.Parameters parameters = mCamera.getParameters();
+            parameters.setPreviewSize(this.getWidth(), this.getHeight());
+            mCamera.setParameters(parameters);
+            mCamera.startPreview();
+            
             mCamera.startPreview();
         } catch (IOException e) {
             Log.d("CameraPreview", "Error setting camera preview: " + e.getMessage());

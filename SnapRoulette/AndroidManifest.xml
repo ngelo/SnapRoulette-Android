@@ -51,10 +51,16 @@
             android:name="com.example.snaproulette.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
+            <fragment
+                android:id="@+id/list"
+                android:name="com.example.CameraFragment"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1" />
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+<category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity

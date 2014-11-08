@@ -45,10 +45,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     public void surfaceDestroyed(SurfaceHolder holder) {
         // Surface will be destroyed when we return, so stop the preview.
-        if (mCamera != null) {
-            // Call stopPreview() to stop updating the preview surface.
-            mCamera.stopPreview();
-        }
+    	stopPreviewAndFreeCamera();
     }
 
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {

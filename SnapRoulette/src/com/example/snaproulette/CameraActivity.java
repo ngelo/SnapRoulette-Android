@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 public class CameraActivity extends Activity {
 
+	Button mTakePhotoButton;
 	Camera mCamera;
 	CameraPreview mCameraPreview;
 	ImageView cameraView;
@@ -50,7 +52,13 @@ public class CameraActivity extends Activity {
         FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
         preview.addView(mCameraPreview);
         
-//        mCamera.startPreview();
+        mTakePhotoButton = (Button) findViewById(R.id.take_photo_button);
+        mTakePhotoButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	Toast.makeText(CameraActivity.this, "Take a photo", Toast.LENGTH_SHORT).show();
+//                mCamera.ta
+            }
+        });
     }
     
     @Override

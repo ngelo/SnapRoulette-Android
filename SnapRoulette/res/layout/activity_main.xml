@@ -10,11 +10,11 @@
         android:layout_height="fill_parent" />
 
     <Button
-        android:id="@+id/button_capture"
+        android:id="@+id/take_photo_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:text="@string/capture" />
+        android:text="@string/take_photo" />
 
 </RelativeLayout>

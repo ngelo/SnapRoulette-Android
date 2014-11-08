@@ -4,6 +4,6 @@
     <string name="app_name">SnapRoulette</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="capture">Capture</string>
+    <string name="take_photo">Take Photo</string>
 
 </resources>

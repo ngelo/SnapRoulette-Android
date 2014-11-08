@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,41 +24,45 @@ public class CameraFragment extends Fragment {
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_camera, container, false);
+        View v = inflater.inflate(R.layout.fragment_camera, container, false);
+        
+        // Check if camera is available.
+        if (checkForCameraHardware(getActivity())) {
+        	Log.d("CameraFragment", "Camera hardware is available! :)");
+        } else {
+        	Log.d("CameraFragment", "Camera hardware is not available.");
+        }
+        
+        // Get an instance of the camera
+        mCamera = getCameraInstance();
+        
+        if (mCamera == null) {
+        	Log.d("CameraFragment", "Camera instance is null");
+        } else {
+        	Log.d("CameraFragment", "Camera instance retrieved!");
+        }
+        
+        // Create our Preview view and set it as the content of our activity.
+        mCameraPreview = new CameraPreview(getActivity(), mCamera);
+        FrameLayout preview = (FrameLayout) v.findViewById(R.id.camera_preview);
+        preview.addView(mCameraPreview);
+        
+        mTakePhotoButton = (Button) v.findViewById(R.id.take_photo_button);
+        mTakePhotoButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            	// TODO Take a photo from the camera
+            	Toast.makeText(getActivity(), "Take a photo", Toast.LENGTH_SHORT).show();
+            }
+        });
+        
+        return v;
     }
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		
-        // Check if camera is available.
-        if (checkForCameraHardware(getActivity())) {
-        	Toast.makeText(getActivity(), "Camera hardware is available! :).", Toast.LENGTH_SHORT).show();
-        } else {
-        	Toast.makeText(getActivity(), "Camera hardware is not available.", Toast.LENGTH_SHORT).show();
-        }
-        
-//        // Get an instance of the camera
-//        mCamera = getCameraInstance();
-//        
-//        if (mCamera == null) {
-//        	Toast.makeText(CameraFragment.this, "Camera instance is null.", Toast.LENGTH_SHORT).show();
-//        } else {
-//        	Toast.makeText(CameraFragment.this, "Camera instance retrieved!.", Toast.LENGTH_SHORT).show();
-//        }
-//        
-//        // Create our Preview view and set it as the content of our activity.
-//        mCameraPreview = new CameraPreview(CameraFragment.this, mCamera);
-//        FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
-//        preview.addView(mCameraPreview);
-//        
-//        mTakePhotoButton = (Button) findViewById(R.id.take_photo_button);
-//        mTakePhotoButton.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//            	Toast.makeText(CameraActivity.this, "Take a photo", Toast.LENGTH_SHORT).show();
-////                mCamera.ta
-//            }
-//        });
+
 	}
 	
     /** Check if this device has a camera */

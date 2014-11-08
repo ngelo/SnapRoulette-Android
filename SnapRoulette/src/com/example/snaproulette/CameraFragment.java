@@ -1,5 +1,7 @@
 package com.example.snaproulette;
 
+import com.parse.ParseObject;
+
 import android.app.Fragment;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -52,12 +54,17 @@ public class CameraFragment extends Fragment {
             public void onClick(View v) {
             	// TODO Take a photo from the camera
             	Toast.makeText(getActivity(), "Take a photo", Toast.LENGTH_SHORT).show();
+            	sendPicture("hi");
             }
         });
         
         return v;
     }
-	
+	public void sendPicture(Object obj) {
+		ParseObject parse = new ParseObject("User");
+		parse.put("User", obj);
+		parse.saveInBackground();
+	}
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);

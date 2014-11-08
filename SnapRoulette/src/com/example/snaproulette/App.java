@@ -1,16 +1,13 @@
 package com.example.snaproulette;
 
-import com.parse.Parse;
-import com.parse.ParseFile;
-import com.parse.ParseInstallation;
-import com.parse.ParseObject;
-import com.parse.PushService;
-
 import android.app.Application;
+import android.util.Log;
+
+import com.parse.*;
+
 
 public class App extends Application {
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(){
 		super.onCreate();
@@ -24,6 +21,18 @@ public class App extends Application {
 		
 		// Also in this method, specify a default Activity to handle push notifications
 		//PushService.setDefaultPushCallback(this, MainActivity.class);
+		
+		ParseAnonymousUtils.logIn(new LogInCallback() {
+			  @Override
+			  public void done(ParseUser user, ParseException e) {
+			    if (e != null) {
+			      Log.d("MyApp", "Anonymous login failed.");
+			    } else {
+			      Log.d("MyApp", "Anonymous user logged in.");
+			    }
+			  }
+			  
+			});
 
 		// Test the connection to Parse by creating a new object and 
 		// saving it to the server.

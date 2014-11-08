@@ -45,24 +45,22 @@ public class App extends Application {
 		//creating Parsefile in byte[]
 		byte[] data = "SnapRoulette!".getBytes();
 		ParseFile file = new ParseFile("imageFile.png", data);
-		
-		//saves the file
-		file.saveInBackground();
-		
-		//associating Parse file with Parse Object
-		ParseObject Pictures = new ParseObject("appPictures");
-		Pictures.put("pictureName", "Joe Smith");
-		Pictures.put("PicturesFile", file);
-		Pictures.saveInBackground();
-		ParseFile applicantResume = (ParseFile)Pictures.get("PicturesFile");
-		applicantResume.getDataInBackground(new GetDataCallback() {
-			  public void done(byte[] data, ParseException e) {
-			    if (e == null) {
-			      // data has the bytes for the resume
-			    } else {
-			      // something went wrong
-			    }
-			  }
-			});
+
+        //saves the file
+        file.saveInBackground();
+        ParseObject Pictures = new ParseObject("Pictures");
+        Pictures.put("pictureName", "Joe Smith");
+        Pictures.put("pictureResumeFile", file);
+        Pictures.saveInBackground();
+        ParseFile applicantResume = (ParseFile)Pictures.get("pictureResumeFile");
+        applicantResume.getDataInBackground(new GetDataCallback() {
+            public void done(byte[] data, ParseException e) {
+                if (e == null) {
+                    // data has the bytes for the resume
+                } else {
+                    // something went wrong
+                }
+            }
+        });
 	}
 }

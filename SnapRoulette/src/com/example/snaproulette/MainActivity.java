@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 //import com.parse.ui.ParseLoginBuilder;
@@ -22,15 +23,17 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         System.out.println("ok");
-        cameraView = (ImageView)findViewById(R.id.camera_view);
-        cameraView.setOnClickListener(new OnClickListener() {
+        mPreview = new Preview(this,mCamera);
+        ((FrameLayout) findViewById(R.id.preview)).addView(mPreview);
+        //cameraView = (ImageView)findViewById(R.id.camera_view);
+        /*cameraView.setOnClickListener(new OnClickListener() {
            @Override
            public void onClick(View v) {
               //open();
         	   boolean isgood = safeCameraOpen(0);
-               System.out.println("opened");
+               System.out.println("opened good");
            }
-        });
+        });*/
 
         
 //        ParseLoginBuilder builder = new ParseLoginBuilder(MainActivity.this);
@@ -38,12 +41,15 @@ public class MainActivity extends Activity {
     }
     private boolean safeCameraOpen(int id) {
         boolean qOpened = false;
-        mCamera = null;
+        
         try {
         	System.out.println("try");
-            //releaseCameraAndPreview();
+            releaseCameraAndPreview();
             System.out.println("hay");
-            mCamera = Camera.open();
+           // mCamera.unlock();
+            	System.out.println("ok");
+            mCamera = Camera.open(0);
+
             System.out.println("opened");
             qOpened = (mCamera != null);
         } catch (Exception e) {
@@ -56,8 +62,8 @@ public class MainActivity extends Activity {
 
     private void releaseCameraAndPreview() {
     	System.out.println("in");
-        mPreview.setCamera(mCamera);
-        System.out.println("set camer null");
+        mPreview.setCamera(null);
+        System.out.println("set camera null");
         if (mCamera != null) {
             mCamera.release();
             mCamera = null;

@@ -6,12 +6,19 @@
     tools:context=".MainActivity" >
 
    
+   <!--  
     <FrameLayout
         android:id="@+id/preview"
 		android:layout_weight="1" 
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent">
 	</FrameLayout>
+	-->
+	<ImageView
+	    android:id="@+id/camera_view"
+	    android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+	    ></ImageView>
     
     
 </RelativeLayout>

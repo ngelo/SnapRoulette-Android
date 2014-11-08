@@ -18,7 +18,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.ViewGroup;
 
-class Preview extends SurfaceView implements SurfaceHolder.Callback {
+class Preview extends ViewGroup implements SurfaceHolder.Callback {
 
     SurfaceView mSurfaceView;
     SurfaceHolder mHolder;
@@ -35,12 +35,12 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 
         System.out.println("construct");
         //mCamera = null;
-       // mSurfaceView = new SurfaceView(context);
-        //addView(mSurfaceView);
+        mSurfaceView = new SurfaceView(context);
+        addView(mSurfaceView);
         System.out.println("surface view added");
         // Install a SurfaceHolder.Callback so we get notified when the
         // underlying surface is created and destroyed.
-        mHolder = getHolder();
+        mHolder = mSurfaceView.getHolder();
         mHolder.addCallback(this);
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
     }
@@ -103,6 +103,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void surfaceChanged(SurfaceHolder holder, int format, int w, int h) {
+    	System.out.println("surface changed");
         // Now that the size is known, set up the camera parameters and begin
         // the preview.
         Camera.Parameters parameters = mCamera.getParameters();
@@ -117,7 +118,7 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
-		
+		System.out.println("surface created");
 		try {
 			mCamera = Camera.open(0);
 			mCamera.setPreviewDisplay(holder);
@@ -156,12 +157,12 @@ class Preview extends SurfaceView implements SurfaceHolder.Callback {
 				canvas.getHeight() / 2, p);
 	}
 
-	/*@Override
+	@Override
 	protected void onLayout(boolean arg0, int arg1, int arg2, int arg3, int arg4) {
 		// TODO Auto-generated method stub
 		System.out.println("onlayout");
 		
 		
-	}*/
+	}
     
 }

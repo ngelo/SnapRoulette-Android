@@ -42,6 +42,7 @@ public class CameraFragment extends Fragment {
 		public void onPictureTaken(byte[] data, Camera camera) {
 			Log.d("CameraFragment", "onPictureTaken - jpeg");
 			sendSnap(data);
+			Toast.makeText(getActivity(), "sent snap", Toast.LENGTH_SHORT).show();
 		}
 	};
 	
@@ -82,7 +83,8 @@ public class CameraFragment extends Fragment {
         
         return v;
     }
-	
+
+
     /** Check if this device has a camera */
     private boolean checkForCameraHardware(Context context) {
         if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){

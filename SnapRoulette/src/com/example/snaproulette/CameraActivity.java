@@ -1,7 +1,9 @@
 package com.example.snaproulette;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,35 +12,56 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 //import com.parse.ui.ParseLoginBuilder;
 
-public class MainActivity extends Activity {
+public class CameraActivity extends Activity {
 
 	Camera mCamera;
 	Preview mPreview;
 	ImageView cameraView;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        System.out.println("ok");
-        mPreview = new Preview(this,mCamera);
-       // ((FrameLayout) findViewById(R.id.preview)).addView(mPreview);
-        cameraView = (ImageView)findViewById(R.id.camera_view);
-        cameraView.setOnClickListener(new OnClickListener() {
-           @Override
-           public void onClick(View v) {
-              //open();
-        	   boolean isgood = safeCameraOpen(0);
-               System.out.println(isgood);
-           }
-        });
-
         
-//        ParseLoginBuilder builder = new ParseLoginBuilder(MainActivity.this);
-//        startActivityForResult(builder.build(), 0);
+        // Check if camera is available.
+        if (checkForCameraHardware(this)) {
+        	Toast.makeText(CameraActivity.this, "Camera is available! :).", Toast.LENGTH_SHORT).show();
+        }
+        
+        else {
+        	Toast.makeText(CameraActivity.this, "Camera is not available.", Toast.LENGTH_SHORT).show();
+        }
+        
+        setupCamera();
     }
+    
+    /** Check if this device has a camera */
+    private boolean checkForCameraHardware(Context context) {
+        if (context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA)){
+            // this device has a camera
+            return true;
+        } else {
+            // no camera on this device
+            return false;
+        }
+    }
+    
+    void setupCamera() {
+    	// Attempt to get a Camera instance.
+    	try {
+    		mCamera = Camera.open();
+    	}
+    	
+    	// Camera is not available (in use or does not exist)
+    	catch (Exception e) {
+    		Toast.makeText(CameraActivity.this, "Camera is not available (in use or does not exist, duration", Toast.LENGTH_LONG).show();
+    	}
+    }
+    
     private boolean safeCameraOpen(int id) {
         boolean qOpened = false;
         

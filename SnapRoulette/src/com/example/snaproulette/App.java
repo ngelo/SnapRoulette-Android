@@ -54,5 +54,15 @@ public class App extends Application {
 		Pictures.put("pictureName", "Joe Smith");
 		Pictures.put("PicturesFile", file);
 		Pictures.saveInBackground();
+		ParseFile applicantResume = (ParseFile)Pictures.get("applicantResumeFile");
+		applicantResume.getDataInBackground(new GetDataCallback() {
+			  public void done(byte[] data, ParseException e) {
+			    if (e == null) {
+			      // data has the bytes for the resume
+			    } else {
+			      // something went wrong
+			    }
+			  }
+			});
 	}
 }

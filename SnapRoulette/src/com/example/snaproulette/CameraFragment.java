@@ -1,11 +1,14 @@
 package com.example.snaproulette;
 
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 
 import android.app.Fragment;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
+import android.hardware.Camera.PictureCallback;
+import android.hardware.Camera.ShutterCallback;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +25,25 @@ public class CameraFragment extends Fragment {
 	Camera mCamera;
 	CameraPreview mCameraPreview;
 	ImageView cameraView;
+	
+	ShutterCallback mShutterCallback = new ShutterCallback() {
+		public void onShutter() {
+			Log.d("CameraFragment", "on Shutter'd");
+		}
+	};
+	
+	PictureCallback mRawCallback = new PictureCallback() {
+		public void onPictureTaken(byte[] data, Camera camera) {
+			Log.d("CameraFragment", "onPictureTaken - raw");
+		}
+	};
+	
+	PictureCallback mJpegCallback = new PictureCallback() {
+		public void onPictureTaken(byte[] data, Camera camera) {
+			Log.d("CameraFragment", "onPictureTaken - jpeg");
+			sendSnap(data);
+		}
+	};
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,25 +74,14 @@ public class CameraFragment extends Fragment {
         mTakePhotoButton = (Button) v.findViewById(R.id.take_photo_button);
         mTakePhotoButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	// TODO Take a photo from the camera
             	Toast.makeText(getActivity(), "Take a photo", Toast.LENGTH_SHORT).show();
-            	sendPicture("hi");
+            	
+            	mCamera.takePicture(mShutterCallback, mRawCallback, mJpegCallback);
             }
         });
         
         return v;
     }
-	public void sendPicture(Object obj) {
-		ParseObject parse = new ParseObject("User");
-		parse.put("User", obj);
-		parse.saveInBackground();
-	}
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		
-
-	}
 	
     /** Check if this device has a camera */
     private boolean checkForCameraHardware(Context context) {
@@ -94,4 +105,11 @@ public class CameraFragment extends Fragment {
         }
         return c; // returns null if camera is unavailable
     }
+    
+	private void sendSnap(byte[] rawJpegImageData) {
+		ParseObject parse = new ParseObject("Snap");
+		ParseFile imageFile = new ParseFile("image.jpg", rawJpegImageData);
+		parse.put("imageFile", imageFile);
+		parse.saveInBackground();
+	}
 }

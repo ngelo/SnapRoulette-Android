@@ -36,31 +36,31 @@ public class App extends Application {
 
 		// Test the connection to Parse by creating a new object and 
 		// saving it to the server.
-		ParseObject testObject = new ParseObject("TestObject");
-		testObject.put("redbull","dont give me wings");
-		testObject.saveInBackground();
+//		ParseObject testObject = new ParseObject("TestObject");
+//		testObject.put("redbull","dont give me wings");
+//		testObject.saveInBackground();
 		
 		
 		//ParseFile
 		//creating Parsefile in byte[]
-		byte[] data = "SnapRoulette!".getBytes();
-		ParseFile file = new ParseFile("imageFile.png", data);
+//		byte[] data = "SnapRoulette!".getBytes();
+//		ParseFile file = new ParseFile("imageFile.png", data);
 
         //saves the file
-        file.saveInBackground();
-        ParseObject Pictures = new ParseObject("Pictures");
-        Pictures.put("pictureName", "Joe Smith");
-        Pictures.put("pictureResumeFile", file);
-        Pictures.saveInBackground();
-        ParseFile applicantResume = (ParseFile)Pictures.get("pictureResumeFile");
-        applicantResume.getDataInBackground(new GetDataCallback() {
-            public void done(byte[] data, ParseException e) {
-                if (e == null) {
-                    // data has the bytes for the resume
-                } else {
-                    // something went wrong
-                }
-            }
-        });
+//        file.saveInBackground();
+//        ParseObject Pictures = new ParseObject("Pictures");
+//        Pictures.put("pictureName", "Joe Smith");
+//        Pictures.put("pictureResumeFile", file);
+//        Pictures.saveInBackground();
+//        ParseFile applicantResume = (ParseFile)Pictures.get("pictureResumeFile");
+//        applicantResume.getDataInBackground(new GetDataCallback() {
+//            public void done(byte[] data, ParseException e) {
+//                if (e == null) {
+//                    // data has the bytes for the resume
+//                } else {
+//                    // something went wrong
+//                }
+//            }
+//        });
 	}
 }

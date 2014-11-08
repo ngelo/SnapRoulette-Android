@@ -23,7 +23,7 @@ public class App extends Application {
 		ParseInstallation.getCurrentInstallation().saveInBackground();
 		
 		// Also in this method, specify a default Activity to handle push notifications
-		PushService.setDefaultPushCallback(this, MainActivity.class);
+//		PushService.setDefaultPushCallback(this, MainActivity.class);
 
 		// Test the connection to Parse by creating a new object and 
 		// saving it to the server.

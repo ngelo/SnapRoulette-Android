@@ -116,19 +116,40 @@ public class CameraFragment extends Fragment {
     
 	private void sendSnap(byte[] rawJpegImageData) {
 		Bitmap snapImageBitmap = BitmapFactory.decodeByteArray(rawJpegImageData, 0, rawJpegImageData.length);
-		Bitmap scaledSnapImageBitmap = Bitmap.createScaledBitmap(snapImageBitmap, 640, 640, true);
+
+		// Calculate the scaled size and scale the image.
+		int scaledWidth = 0;
+		int scaledHeight = 0;
+
+		// The width is greater than the height.
+		if (snapImageBitmap.getWidth() > snapImageBitmap.getHeight()) {
+			scaledWidth = 640;
+			scaledHeight = (scaledHeight / scaledWidth) * 640;
+		}
+
+		// The height is greater than the width.
+		else if (snapImageBitmap.getWidth() < snapImageBitmap.getHeight()) {
+			scaledWidth = (scaledWidth / scaledHeight) * 640;
+			scaledHeight = 640;
+		}
+
+		// Image is square
+		else {
+			scaledWidth = 640;
+			scaledHeight = 640;
+		}
+
+		Bitmap scaledSnapImageBitmap = Bitmap.createScaledBitmap(snapImageBitmap, scaledWidth, scaledHeight, true);
 		
+		// Rotate the image
 		Matrix rotationMatrix = new Matrix();
 		rotationMatrix.postRotate(90);
-		
 		Bitmap rotatedScaledSnapImageBitmap = Bitmap.createBitmap(scaledSnapImageBitmap, 0, 0, scaledSnapImageBitmap.getWidth(), scaledSnapImageBitmap.getHeight(), rotationMatrix, true);
 		
+		// Get the raw data of the processed image.
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
 		rotatedScaledSnapImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
 		byte[] rawScaledImage = stream.toByteArray();
-		
-		// TODO Set user id for image
-		ParseUser.getCurrentUser();
 		
 		ParseObject snap = new ParseObject("Snap");
 		ParseFile imageFile = new ParseFile("image.jpg", rawScaledImage);

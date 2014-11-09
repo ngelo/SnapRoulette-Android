@@ -2,6 +2,8 @@ package com.example.snaproulette;
 
 import com.parse.*;
 
+import edu.foothill.paint.R;
+
 import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,20 +11,24 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-public class RouletteFragment extends Fragment {
+public class RouletteFragment extends Fragment implements OnTouchListener {
 
 	ParseFile file;
 	boolean stillWatching= true;
 	ImageView mSnapImageView;
 	private Handler mHandler = null;
 	private StateMachine mTask = null;
-	// Game variables and constants
 	private int mTickDelay = 0;
+	private final int STATE_STOP=1;
+	private final int STATE_START = 0;
+	
 	private final int MAX_TICK_DELAY = 30; // 1 second
 	private int mState = 0;
 	
@@ -102,15 +108,42 @@ public class RouletteFragment extends Fragment {
 		
 		
 	}
+	@Override
+	public boolean onTouch(View view, MotionEvent event) {
+		if (view.getId() == R.id.snap_image_view) {
+			switch (event.getAction()) {
+			// An ACTION_DOWN event occurs when the user first touches
+			case MotionEvent.ACTION_DOWN:
+				touch_down(event.getX(), event.getY());
+				break;
+			// AN ACTION_MOVE event occurs when the user drags
+			case MotionEvent.ACTION_MOVE:
+				touch_move(event.getX(), event.getY());
+				break;
+			case MotionEvent.ACTION_UP:
+				touch_up(event.getX(), event.getY());
+				break;
+			}
+			// "invalidate" means that the screen needs to be repainted
+			// (adds an "onDraw" event to the DrawCanvas event queue)
+			//mDrawCanvas.setShapes(mShapes);
+			mSnapImageView.invalidate();
+			return true;
+		}
+		return false;
+	}
+	private void touch_down(float x, float y) {}
+	private void touch_move(float x, float y) {}
+	private void touch_up(float x, float y) {}
 	private class StateMachine implements Runnable {
 		public void run() {
-			/*if (mState == STATE_STOP) {
-			}  else if (mState == STATE_ROTATE) {
+			if (mState == STATE_STOP) {
+			}  else if (mState == STATE_START) {
 				timercount++;
 				animateObjects();
 			}  
 			mDrawCanvas.invalidate();
-			mHandler.postDelayed(mTask, mTickDelay);*/
+			mHandler.postDelayed(mTask, mTickDelay);
 		}
 	}
 }

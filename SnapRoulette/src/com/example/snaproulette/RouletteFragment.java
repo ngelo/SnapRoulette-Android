@@ -30,6 +30,7 @@ public class RouletteFragment extends Fragment {
 
 	public void getSnap() {
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Snap");
+		query.orderByAscending("createdAt");
 		query.whereEqualTo("hasBeenViewed", Boolean.FALSE);
 
 		// TODO

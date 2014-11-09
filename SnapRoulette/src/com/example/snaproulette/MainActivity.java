@@ -9,7 +9,7 @@ import android.widget.Toast;
 public class MainActivity extends Activity {
 	
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) { 
 		super.onCreate(savedInstanceState);
 		getActionBar().setDisplayShowTitleEnabled(false);
 		getActionBar().setDisplayShowHomeEnabled(false);
@@ -32,6 +32,8 @@ public class MainActivity extends Activity {
 						new TabListener<RouletteFragment>(this, "Roulette",
 								RouletteFragment.class));
 		actionBar.addTab(rouletteTab);
+		//RouletteFragment rf = new RouletteFragment();
+		//rf.getSnap();
 
 	}
 }

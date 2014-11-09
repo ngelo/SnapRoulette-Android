@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -126,10 +127,14 @@ public class CameraFragment extends Fragment {
 		rotatedScaledSnapImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
 		byte[] rawScaledImage = stream.toByteArray();
 		
+		// TODO Set user id for image
+		ParseUser.getCurrentUser();
+		
 		ParseObject snap = new ParseObject("Snap");
 		ParseFile imageFile = new ParseFile("image.jpg", rawScaledImage);
 		snap.put("imageFile", imageFile);
 		snap.put("hasBeenViewed", Boolean.FALSE);
+		snap.put("userId", ParseUser.getCurrentUser().getObjectId());
 		snap.saveInBackground();
 	}
 }

@@ -54,7 +54,7 @@ public class RouletteFragment extends Fragment {
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Snap");
 		query.orderByAscending("createdAt");
 		query.whereEqualTo("hasBeenViewed", Boolean.FALSE);
-		query.whereNotEqualTo("userId", ParseUser.getCurrentUser().getObjectId());
+		query.whereNotEqualTo("deviceId", ParseInstallation.getCurrentInstallation().getObjectId());
 
 		// TODO
 		// DONE 1.) Where hasBeenViewed = false

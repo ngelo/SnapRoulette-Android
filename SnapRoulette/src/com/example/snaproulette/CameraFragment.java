@@ -3,6 +3,7 @@ package com.example.snaproulette;
 import java.io.ByteArrayOutputStream;
 
 import com.parse.ParseFile;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
@@ -155,7 +156,7 @@ public class CameraFragment extends Fragment {
 		ParseFile imageFile = new ParseFile("image.jpg", rawScaledImage);
 		snap.put("imageFile", imageFile);
 		snap.put("hasBeenViewed", Boolean.FALSE);
-		snap.put("userId", ParseUser.getCurrentUser().getObjectId());
+		snap.put("deviceId", ParseInstallation.getCurrentInstallation().getObjectId());
 		snap.saveInBackground();
 	}
 }

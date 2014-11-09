@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
 						new TabListener<CameraFragment>(this, "Camera",
 								CameraFragment.class));
 		actionBar.addTab(cameraTab);
-
+		cameraTab.setIcon(R.drawable.ic_launcher);
 		Tab rouletteTab = actionBar
 				.newTab()
 				.setText("Roulette")

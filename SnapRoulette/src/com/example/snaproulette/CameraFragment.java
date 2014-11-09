@@ -42,7 +42,7 @@ public class CameraFragment extends Fragment {
 		public void onPictureTaken(byte[] data, Camera camera) {
 			Log.d("CameraFragment", "onPictureTaken - jpeg");
 			sendSnap(data);
-			Toast.makeText(getActivity(), "sent snap", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), "Sent Snap", Toast.LENGTH_SHORT).show();
 		}
 	};
 	

@@ -33,8 +33,5 @@ public class MainActivity extends Activity {
 						new TabListener<RouletteFragment>(this, "Roulette",
 								RouletteFragment.class));
 		actionBar.addTab(rouletteTab);
-		//RouletteFragment rf = new RouletteFragment();
-		//rf.getSnap();
-
 	}
 }

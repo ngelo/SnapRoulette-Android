@@ -145,7 +145,8 @@ public class CameraFragment extends Fragment {
 		// Rotate the image
 		Matrix rotationMatrix = new Matrix();
 		rotationMatrix.postRotate(90);
-		Bitmap rotatedScaledSnapImageBitmap = Bitmap.createBitmap(scaledSnapImageBitmap, 0, 0, scaledSnapImageBitmap.getWidth(), scaledSnapImageBitmap.getHeight(), rotationMatrix, true);
+		Bitmap rotatedScaledSnapImageBitmap = Bitmap.createBitmap(scaledSnapImageBitmap, 0, 
+				0, scaledSnapImageBitmap.getWidth(), scaledSnapImageBitmap.getHeight(), rotationMatrix, true);
 		
 		// Get the raw data of the processed image.
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();

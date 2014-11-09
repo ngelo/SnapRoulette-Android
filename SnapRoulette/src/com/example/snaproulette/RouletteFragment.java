@@ -5,6 +5,7 @@ import com.parse.*;
 import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.CountDownTimer;
@@ -20,12 +21,14 @@ public class RouletteFragment extends Fragment implements OnTouchListener {
 
 	ParseFile file;
 	boolean stillWatching= false;
+	boolean timer = false;
 	ImageView mSnapImageView;
 	private Handler mHandler = null;
 	private StateMachine mTask = null;
 	private int mTickDelay = 0;
 	private final int STATE_STOP=1;
 	private final int STATE_START = 0;
+	Bitmap homescreen;
 	
 	private final int MAX_TICK_DELAY = 30; // 1 second
 	private int mState = 0;
@@ -36,7 +39,11 @@ public class RouletteFragment extends Fragment implements OnTouchListener {
 		View v = inflater.inflate(R.layout.fragment_roulette, container, false);
 		
 		mSnapImageView = (ImageView) v.findViewById(R.id.snap_image_view);
-		mSnapImageView.setOnClickListener(new OnClickListener(){
+		mSnapImageView.setOnTouchListener(this);
+		homescreen = BitmapFactory.decodeResource(getResources(),
+        		getResources().getIdentifier("logoroulette" , "drawable", getActivity().getPackageName()));
+		mSnapImageView.setImageBitmap(homescreen);
+		/*mSnapImageView.setOnClickListener(new OnClickListener(){
 
 			@Override
 			public void onClick(View v) {
@@ -44,7 +51,7 @@ public class RouletteFragment extends Fragment implements OnTouchListener {
 				
 			}
 			
-		});
+		});*/
 		
 		return v;
 	}
@@ -64,7 +71,7 @@ public class RouletteFragment extends Fragment implements OnTouchListener {
 
 		query.getFirstInBackground(new GetCallback<ParseObject>() {
 			public void done(ParseObject object, ParseException e) {
-				if (e == null) {
+				if (object != null && e == null) {				
 					file = object.getParseFile("imageFile");
 					// return the string name for now, display the byte[] when
 					// finished
@@ -73,10 +80,14 @@ public class RouletteFragment extends Fragment implements OnTouchListener {
 					try {
 						byte[] bytes = file.getData();
 						Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-						mSnapImageView.setImageBitmap(bmp);
+						Matrix rotationMatrix = new Matrix();
+						rotationMatrix.postRotate(90);
+						Bitmap rotatedScaledSnapImageBitmap = Bitmap.createBitmap(bmp, 0, 0, 
+								bmp.getWidth(), bmp.getHeight(), rotationMatrix, true);
+						mSnapImageView.setImageBitmap(rotatedScaledSnapImageBitmap);
 						object.put("hasBeenViewed", Boolean.TRUE);
 						object.saveInBackground();
-						new CountDownTimer(5000, 1000) {
+						/*new CountDownTimer(5000, 1000) {
 							
 						     public void onTick(long millisUntilFinished) {
 						         System.out.println("cool");
@@ -89,13 +100,15 @@ public class RouletteFragment extends Fragment implements OnTouchListener {
 						 			getSnap();
 						 		}
 						     }
-						  }.start();
+						  }.start();*/
 					} catch (ParseException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				} else {
 					// alert the user that there are no more images to read!
+					mSnapImageView.setImageBitmap(homescreen);
+					stillWatching = false;
 					
 					return;
 					// something went wrong
@@ -105,9 +118,35 @@ public class RouletteFragment extends Fragment implements OnTouchListener {
 		
 		
 	}
+	public void snapTimer()
+	{
+		System.out.println("coming in");
+		if(!timer)
+		{
+			timer = true;
+			getSnap();
+			new CountDownTimer(3000, 1000) {
+			     public void onTick(long millisUntilFinished) {
+			         System.out.println("cool");
+			     }
+
+			     public void onFinish() {
+			    	 // need to implement setting stillWatching to false if the screen's clicked
+			    	 // while a picture is displaying
+			    	// if (stillWatching) {
+			 		//	getSnap();
+			 		timer = false;
+			 		//}
+			     }
+			  }.start();
+			  
+		}
+	}
 	@Override
 	public boolean onTouch(View view, MotionEvent event) {
+			System.out.println("in touch");
 		if (view.getId() == R.id.snap_image_view) {
+			System.out.println("on touch");
 			switch (event.getAction()) {
 			// An ACTION_DOWN event occurs when the user first touches
 			case MotionEvent.ACTION_DOWN:
@@ -124,17 +163,25 @@ public class RouletteFragment extends Fragment implements OnTouchListener {
 			// "invalidate" means that the screen needs to be repainted
 			// (adds an "onDraw" event to the DrawCanvas event queue)
 			//mDrawCanvas.setShapes(mShapes);
-			//mSnapImageView.invalidate();
+			mSnapImageView.invalidate();
 			return true;
 		}
 		return false;
 	}
 	private void touch_down(float x, float y) {
 		stillWatching = true;
+		//System.out.println("touch down");
 		
 	}
-	private void touch_move(float x, float y) {}
-	private void touch_up(float x, float y) {}
+	private void touch_move(float x, float y) {
+		stillWatching = true;
+		snapTimer();
+		//System.out.println("touch move");
+	}
+	private void touch_up(float x, float y) {
+		stillWatching = false;
+		mSnapImageView.setImageBitmap(homescreen);
+	}
 	private class StateMachine implements Runnable {
 		public void run() {
 			if (mState == STATE_STOP) {

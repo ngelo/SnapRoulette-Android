@@ -117,8 +117,13 @@ public class CameraFragment extends Fragment {
 		Bitmap snapImageBitmap = BitmapFactory.decodeByteArray(rawJpegImageData, 0, rawJpegImageData.length);
 		Bitmap scaledSnapImageBitmap = Bitmap.createScaledBitmap(snapImageBitmap, 640, 640, true);
 		
+		Matrix rotationMatrix = new Matrix();
+		rotationMatrix.postRotate(90);
+		
+		Bitmap rotatedScaledSnapImageBitmap = Bitmap.createBitmap(scaledSnapImageBitmap, 0, 0, scaledSnapImageBitmap.getWidth(), scaledSnapImageBitmap.getHeight(), rotationMatrix, true);
+		
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		scaledSnapImageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+		rotatedScaledSnapImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
 		byte[] rawScaledImage = stream.toByteArray();
 		
 		ParseObject snap = new ParseObject("Snap");

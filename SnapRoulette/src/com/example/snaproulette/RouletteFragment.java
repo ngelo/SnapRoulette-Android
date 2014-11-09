@@ -34,10 +34,10 @@ public class RouletteFragment extends Fragment {
 		query.whereEqualTo("hasBeenViewed", Boolean.FALSE);
 
 		// TODO
-		// 1.) Where hasBeenViewed = false
+		// DONE 1.) Where hasBeenViewed = false
 		// 2.) Where the user id of the snap is not equal to the current user
-		// 3.) Get the oldest one (or randomly)
-		// 4.) Mark image as read after shown to screen
+		// DONE 3.) Get the oldest one (or randomly)
+		// DONE 4.) Mark image as read after shown to screen
 
 		query.getFirstInBackground(new GetCallback<ParseObject>() {
 			public void done(ParseObject object, ParseException e) {

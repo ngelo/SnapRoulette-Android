@@ -12,8 +12,6 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		Toast.makeText(MainActivity.this, "Setting up tabs", Toast.LENGTH_SHORT).show();
-		
 		// setup action bar for tabs
 		ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);

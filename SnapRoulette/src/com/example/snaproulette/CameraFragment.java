@@ -109,9 +109,12 @@ public class CameraFragment extends Fragment {
     }
     
 	private void sendSnap(byte[] rawJpegImageData) {
-		ParseObject parse = new ParseObject("Snap");
+		
+		
+		ParseObject snap = new ParseObject("Snap");
 		ParseFile imageFile = new ParseFile("image.jpg", rawJpegImageData);
-		parse.put("imageFile", imageFile);
-		parse.saveInBackground();
+		snap.put("imageFile", imageFile);
+		snap.put("hasBeenViewed", Boolean.FALSE);
+		snap.saveInBackground();
 	}
 }

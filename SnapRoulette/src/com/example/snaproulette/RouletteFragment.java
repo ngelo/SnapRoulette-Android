@@ -6,11 +6,8 @@ import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-<<<<<<< Updated upstream
 import android.os.Handler;
-=======
 import android.os.CountDownTimer;
->>>>>>> Stashed changes
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -20,7 +17,7 @@ import android.widget.ImageView;
 public class RouletteFragment extends Fragment {
 
 	ParseFile file;
-	boolean stillWatching;
+	boolean stillWatching= true;
 	ImageView mSnapImageView;
 	private Handler mHandler = null;
 	private StateMachine mTask = null;

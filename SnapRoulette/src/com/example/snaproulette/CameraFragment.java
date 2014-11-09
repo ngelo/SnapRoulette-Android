@@ -119,18 +119,18 @@ public class CameraFragment extends Fragment {
 		Bitmap snapImageBitmap = BitmapFactory.decodeByteArray(rawJpegImageData, 0, rawJpegImageData.length);
 
 		// Calculate the scaled size and scale the image.
-		int scaledWidth = 0;
-		int scaledHeight = 0;
-
+		float scaledWidth = 0;
+		float scaledHeight = 0;
+		System.out.println(snapImageBitmap.getWidth()+" "+snapImageBitmap.getHeight());
 		// The width is greater than the height.
 		if (snapImageBitmap.getWidth() > snapImageBitmap.getHeight()) {
 			scaledWidth = 640;
-			scaledHeight = (scaledHeight / scaledWidth) * 640;
+			scaledHeight = ((float)snapImageBitmap.getHeight() / snapImageBitmap.getWidth()) * 640;
 		}
 
 		// The height is greater than the width.
 		else if (snapImageBitmap.getWidth() < snapImageBitmap.getHeight()) {
-			scaledWidth = (scaledWidth / scaledHeight) * 640;
+			scaledWidth = ((float)snapImageBitmap.getWidth() / snapImageBitmap.getHeight()) * 640;
 			scaledHeight = 640;
 		}
 
@@ -139,9 +139,9 @@ public class CameraFragment extends Fragment {
 			scaledWidth = 640;
 			scaledHeight = 640;
 		}
-
-		Bitmap scaledSnapImageBitmap = Bitmap.createScaledBitmap(snapImageBitmap, scaledWidth, scaledHeight, true);
-		
+		System.out.println(scaledWidth+" "+scaledHeight);
+		Bitmap scaledSnapImageBitmap = Bitmap.createScaledBitmap(snapImageBitmap, (int)scaledWidth, (int)scaledHeight, true);
+		System.out.println(scaledSnapImageBitmap.getWidth()+" "+scaledSnapImageBitmap.getHeight());
 		// Rotate the image
 		Matrix rotationMatrix = new Matrix();
 		rotationMatrix.postRotate(90);

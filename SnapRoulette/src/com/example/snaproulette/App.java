@@ -14,6 +14,8 @@ public class App extends Application {
 		// Configure the application with the Parse SDK
 		Parse.initialize(this, "KaobAtZ2RN71vQlWoZWPKVD51cqCIPirGfTsSq8m",
 				"AuyBC5IMWQttOIhhoQ44mxEMpQ0IelFsDyX8gFTO");
+		//Parse.initialize(this, "uwnoGFcYk6ipDUhVfRJN0RmaEBG4IMSaE4cfvBjt",
+		//		"gf5gbmS9q5OuqYuMZbJ4AAHStucejxU3zSFQPlcT");
 
 		// Save the current Installation to Parse.
 		ParseInstallation.getCurrentInstallation().saveInBackground();

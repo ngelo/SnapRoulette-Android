@@ -16,6 +16,8 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class RouletteFragment extends Fragment implements OnTouchListener {
 
@@ -37,7 +39,6 @@ public class RouletteFragment extends Fragment implements OnTouchListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_roulette, container, false);
-		
 		mSnapImageView = (ImageView) v.findViewById(R.id.snap_image_view);
 		mSnapImageView.setOnTouchListener(this);
 		homescreen = BitmapFactory.decodeResource(getResources(),
@@ -75,13 +76,13 @@ public class RouletteFragment extends Fragment implements OnTouchListener {
 					file = object.getParseFile("imageFile");
 					// return the string name for now, display the byte[] when
 					// finished
-					System.out.println(file.getName());
+					//System.out.println(file.getName());
 					
 					try {
 						byte[] bytes = file.getData();
 						Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 						Matrix rotationMatrix = new Matrix();
-						rotationMatrix.postRotate(90);
+						rotationMatrix.postRotate(0);
 						Bitmap rotatedScaledSnapImageBitmap = Bitmap.createBitmap(bmp, 0, 0, 
 								bmp.getWidth(), bmp.getHeight(), rotationMatrix, true);
 						mSnapImageView.setImageBitmap(rotatedScaledSnapImageBitmap);
@@ -109,7 +110,7 @@ public class RouletteFragment extends Fragment implements OnTouchListener {
 					// alert the user that there are no more images to read!
 					mSnapImageView.setImageBitmap(homescreen);
 					stillWatching = false;
-					
+					Toast.makeText(getActivity(), "No more snaps...", Toast.LENGTH_SHORT).show();
 					return;
 					// something went wrong
 				}
@@ -127,16 +128,15 @@ public class RouletteFragment extends Fragment implements OnTouchListener {
 			getSnap();
 			new CountDownTimer(3000, 1000) {
 			     public void onTick(long millisUntilFinished) {
-			         System.out.println("cool");
 			     }
 
 			     public void onFinish() {
 			    	 // need to implement setting stillWatching to false if the screen's clicked
 			    	 // while a picture is displaying
-			    	// if (stillWatching) {
-			 		//	getSnap();
+			    	 if (stillWatching) {
+			 			getSnap();
 			 		timer = false;
-			 		//}
+			 		}
 			     }
 			  }.start();
 			  
@@ -181,6 +181,7 @@ public class RouletteFragment extends Fragment implements OnTouchListener {
 	private void touch_up(float x, float y) {
 		stillWatching = false;
 		mSnapImageView.setImageBitmap(homescreen);
+		timer = false;
 	}
 	private class StateMachine implements Runnable {
 		public void run() {

@@ -80,9 +80,10 @@ public class CameraFragment extends Fragment {
         preview.addView(mCameraPreview);
         
         mTakePhotoButton = (Button) v.findViewById(R.id.take_photo_button);
+        mTakePhotoButton.getBackground().setAlpha(255);
         mTakePhotoButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	Toast.makeText(getActivity(), "Take a photo", Toast.LENGTH_SHORT).show();
+            	//Toast.makeText(getActivity(), "Take a photo", Toast.LENGTH_SHORT).show();
             	
             	mCamera.takePicture(mShutterCallback, mRawCallback, mJpegCallback);
             }
@@ -159,5 +160,12 @@ public class CameraFragment extends Fragment {
 		snap.put("hasBeenViewed", Boolean.FALSE);
 		snap.put("deviceId", ParseInstallation.getCurrentInstallation().getObjectId());
 		snap.saveInBackground();
+		
+		/*mCamera.stopPreview();
+		mCamera.release();
+		//mCamera = null;
+		mCamera = getCameraInstance();
+		mCameraPreview = new CameraPreview(getActivity(), mCamera);*/
+
 	}
 }

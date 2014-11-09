@@ -32,6 +32,7 @@ public class RouletteFragment extends Fragment {
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Snap");
 		query.orderByAscending("createdAt");
 		query.whereEqualTo("hasBeenViewed", Boolean.FALSE);
+		query.whereNotEqualTo("userId", ParseUser.getCurrentUser().getObjectId());
 
 		// TODO
 		// DONE 1.) Where hasBeenViewed = false
@@ -62,10 +63,7 @@ public class RouletteFragment extends Fragment {
 					System.out.println("Oh Shit");
 					// something went wrong
 				}
-
 			}
-
 		});
 	}
-
 }

@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,12 @@ public class RouletteFragment extends Fragment {
 
 	ParseFile file;
 	ImageView mSnapImageView;
+	private Handler mHandler = null;
+	private StateMachine mTask = null;
+	// Game variables and constants
+	private int mTickDelay = 0;
+	private final int MAX_TICK_DELAY = 30; // 1 second
+	private int mState = 0;
 	
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,5 +72,16 @@ public class RouletteFragment extends Fragment {
 				}
 			}
 		});
+	}
+	private class StateMachine implements Runnable {
+		public void run() {
+			/*if (mState == STATE_STOP) {
+			}  else if (mState == STATE_ROTATE) {
+				timercount++;
+				animateObjects();
+			}  
+			mDrawCanvas.invalidate();
+			mHandler.postDelayed(mTask, mTickDelay);*/
+		}
 	}
 }

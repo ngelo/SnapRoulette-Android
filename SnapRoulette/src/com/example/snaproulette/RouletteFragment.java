@@ -6,15 +6,21 @@ import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+<<<<<<< Updated upstream
 import android.os.Handler;
+=======
+import android.os.CountDownTimer;
+>>>>>>> Stashed changes
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 public class RouletteFragment extends Fragment {
 
 	ParseFile file;
+	boolean stillWatching;
 	ImageView mSnapImageView;
 	private Handler mHandler = null;
 	private StateMachine mTask = null;
@@ -29,13 +35,22 @@ public class RouletteFragment extends Fragment {
 		View v = inflater.inflate(R.layout.fragment_roulette, container, false);
 		
 		mSnapImageView = (ImageView) v.findViewById(R.id.snap_image_view);
-		
+		mSnapImageView.setOnClickListener(new OnClickListener(){
+
+			@Override
+			public void onClick(View v) {
+				stillWatching = false;
+				
+			}
+			
+		});
 		getSnap();
 		
 		return v;
 	}
 
 	public void getSnap() {
+		
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Snap");
 		query.orderByAscending("createdAt");
 		query.whereEqualTo("hasBeenViewed", Boolean.FALSE);
@@ -59,19 +74,36 @@ public class RouletteFragment extends Fragment {
 						byte[] bytes = file.getData();
 						Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
 						mSnapImageView.setImageBitmap(bmp);
-						
 						object.put("hasBeenViewed", Boolean.TRUE);
 						object.saveInBackground();
+						new CountDownTimer(5000, 1000) {
+							
+						     public void onTick(long millisUntilFinished) {
+						         System.out.println("cool");
+						     }
+
+						     public void onFinish() {
+						    	 // need to implement setting stillWatching to false if the screen's clicked
+						    	 // while a picture is displaying
+						    	 if (stillWatching) {
+						 			getSnap();
+						 		}
+						     }
+						  }.start();
 					} catch (ParseException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
 				} else {
-					System.out.println("Oh Shit");
+					// alert the user that there are no more images to read!
+					
+					return;
 					// something went wrong
 				}
 			}
 		});
+		
+		
 	}
 	private class StateMachine implements Runnable {
 		public void run() {

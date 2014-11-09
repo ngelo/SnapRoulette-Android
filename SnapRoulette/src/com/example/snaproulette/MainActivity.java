@@ -11,7 +11,8 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+		getActionBar().setDisplayShowTitleEnabled(false);
+		getActionBar().setDisplayShowHomeEnabled(false);
 		// setup action bar for tabs
 		ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);

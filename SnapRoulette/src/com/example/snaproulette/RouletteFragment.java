@@ -2,8 +2,6 @@ package com.example.snaproulette;
 
 import com.parse.*;
 
-import edu.foothill.paint.R;
-
 import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,7 +19,7 @@ import android.widget.ImageView;
 public class RouletteFragment extends Fragment implements OnTouchListener {
 
 	ParseFile file;
-	boolean stillWatching= true;
+	boolean stillWatching= false;
 	ImageView mSnapImageView;
 	private Handler mHandler = null;
 	private StateMachine mTask = null;
@@ -47,7 +45,6 @@ public class RouletteFragment extends Fragment implements OnTouchListener {
 			}
 			
 		});
-		getSnap();
 		
 		return v;
 	}
@@ -127,22 +124,23 @@ public class RouletteFragment extends Fragment implements OnTouchListener {
 			// "invalidate" means that the screen needs to be repainted
 			// (adds an "onDraw" event to the DrawCanvas event queue)
 			//mDrawCanvas.setShapes(mShapes);
-			mSnapImageView.invalidate();
+			//mSnapImageView.invalidate();
 			return true;
 		}
 		return false;
 	}
-	private void touch_down(float x, float y) {}
+	private void touch_down(float x, float y) {
+		stillWatching = true;
+		
+	}
 	private void touch_move(float x, float y) {}
 	private void touch_up(float x, float y) {}
 	private class StateMachine implements Runnable {
 		public void run() {
 			if (mState == STATE_STOP) {
 			}  else if (mState == STATE_START) {
-				timercount++;
-				animateObjects();
 			}  
-			mDrawCanvas.invalidate();
+			mSnapImageView.invalidate();
 			mHandler.postDelayed(mTask, mTickDelay);
 		}
 	}

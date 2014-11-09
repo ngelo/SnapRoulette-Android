@@ -1,11 +1,16 @@
 package com.example.snaproulette;
 
+import java.io.ByteArrayOutputStream;
+
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 
 import android.app.Fragment;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.hardware.Camera.ShutterCallback;
@@ -109,9 +114,17 @@ public class CameraFragment extends Fragment {
     }
     
 	private void sendSnap(byte[] rawJpegImageData) {
-		ParseObject parse = new ParseObject("Snap");
-		ParseFile imageFile = new ParseFile("image.jpg", rawJpegImageData);
-		parse.put("imageFile", imageFile);
-		parse.saveInBackground();
+		Bitmap snapImageBitmap = BitmapFactory.decodeByteArray(rawJpegImageData, 0, rawJpegImageData.length);
+		Bitmap scaledSnapImageBitmap = Bitmap.createScaledBitmap(snapImageBitmap, 640, 640, true);
+		
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		scaledSnapImageBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+		byte[] rawScaledImage = stream.toByteArray();
+		
+		ParseObject snap = new ParseObject("Snap");
+		ParseFile imageFile = new ParseFile("image.jpg", rawScaledImage);
+		snap.put("imageFile", imageFile);
+		snap.put("hasBeenViewed", Boolean.FALSE);
+		snap.saveInBackground();
 	}
 }
